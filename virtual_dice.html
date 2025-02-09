@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>虛擬6面骰子</title>
+    <style>
+        body {
+            background-color: white;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        .dice {
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            border: 5px solid black;
+            border-radius: 20px;
+            position: relative;
+            background-color: white;
+        }
+        .dot {
+            width: 20px;
+            height: 20px;
+            background-color: black;
+            border-radius: 50%;
+            position: absolute;
+        }
+        .red-dot {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>虛擬6面骰子</h1>
+    <div class="dice" id="dice"></div>
+    <p>桌機與筆電: 按 Ctrl+F5 或點擊骰子擲骰</p>
+    <p>手機: 點按骰子擲骰</p>
+    
+    <script>
+        function rollDice() {
+            const dice = document.getElementById("dice");
+            dice.innerHTML = ""; // 清空骰面
+            
+            const roll = Math.floor(Math.random() * 6) + 1; // 生成1-6的隨機數
+            
+            const dotPositions = {
+                1: [[50, 50]],
+                2: [[20, 20], [80, 80]],
+                3: [[20, 20], [50, 50], [80, 80]],
+                4: [[20, 20], [80, 20], [20, 80], [80, 80]],
+                5: [[20, 20], [80, 20], [50, 50], [20, 80], [80, 80]],
+                6: [[20, 20], [80, 20], [20, 50], [80, 50], [20, 80], [80, 80]]
+            };
+            
+            dotPositions[roll].forEach(pos => {
+                const dot = document.createElement("div");
+                dot.className = "dot";
+                if (roll === 4) dot.classList.add("red-dot"); // 4點為紅色
+                dot.style.left = `${pos[0]}%`;
+                dot.style.top = `${pos[1]}%`;
+                dice.appendChild(dot);
+            });
+        }
+        
+        document.getElementById("dice").addEventListener("click", rollDice);
+        window.addEventListener("keydown", (event) => {
+            if (event.ctrlKey && event.key === "F5") {
+                rollDice();
+            }
+        });
+        
+        rollDice(); // 頁面載入時擲骰
+    </script>
+</body>
+</html>
